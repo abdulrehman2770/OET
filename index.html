@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OET — Online Easy Tuition</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #080808;
+      color: white;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #0d0d0d;
+      border-bottom: 1px solid #292929;
+      padding: 18px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: 900;
+      color: #ff2020;
+    }
+
+    .logo span {
+      color: white;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 35px 20px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #160000, #0d0d0d);
+      border: 1px solid #3b1111;
+      border-radius: 25px;
+      padding: 40px;
+      margin-bottom: 30px;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+
+    .hero h1 span {
+      color: #ff2020;
+    }
+
+    .hero p {
+      color: #aaa;
+      font-size: 16px;
+    }
+
+    .card {
+      background: #111;
+      border: 1px solid #292929;
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      margin-bottom: 15px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 14px;
+      margin: 8px 0;
+      border-radius: 12px;
+      border: 1px solid #333;
+      background: #080808;
+      color: white;
+      outline: none;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #ff2020;
+    }
+
+    button {
+      background: #ff2020;
+      color: white;
+      border: none;
+      padding: 13px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #d91515;
+    }
+
+    .groups {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .group {
+      background: #151515;
+      border: 1px solid #292929;
+      padding: 25px;
+      border-radius: 18px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .group:hover {
+      transform: translateY(-4px);
+      border-color: #ff2020;
+    }
+
+    .group h3 {
+      color: #ff2020;
+      margin-bottom: 8px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      gap: 10px;
+    }
+
+    .back {
+      background: #222;
+    }
+
+    .back:hover {
+      background: #333;
+    }
+
+    textarea {
+      min-height: 300px;
+      resize: vertical;
+    }
+
+    .word-count {
+      color: #aaa;
+      margin-top: 8px;
+    }
+
+    @media(max-width:600px) {
+      .hero {
+        padding: 25px;
+      }
+
+      .hero h1 {
+        font-size: 30px;
+      }
+
+      header {
+        padding: 15px 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">OET <span>• Online Easy Tuition</span></div>
+</header>
+
+<div class="container">
+
+  <!-- LOGIN -->
+  <section id="loginPage">
+
+    <div class="hero">
+      <h1>Welcome to <span>OET</span> ✦</h1>
+      <p>Your simple, aesthetic and student-friendly learning space.</p>
+    </div>
+
+    <div class="card">
+      <h2>Student Login</h2>
+
+      <input
+        type="text"
+        id="studentName"
+        placeholder="Enter your name"
+      >
+
+      <input
+        type="text"
+        id="studentCode"
+        placeholder="Enter student code"
+      >
+
+      <button onclick="login()">Enter Dashboard →</button>
+    </div>
+
+  </section>
+
+
+  <!-- DASHBOARD -->
+  <section id="dashboard" class="hidden">
+
+    <div class="topbar">
+      <div>
+        <h1>Hi, <span id="displayName"></span> 👋</h1>
+        <p style="color:#888;">Choose your group</p>
+      </div>
+
+      <button onclick="logout()" class="back">Logout</button>
+    </div>
+
+    <div class="groups">
+
+      <div class="group" onclick="openGroup('Group A')">
+        <h3>Group A</h3>
+        <p>Writing & OET Practice</p>
+      </div>
+
+      <div class="group" onclick="openGroup('Group B')">
+        <h3>Group B</h3>
+        <p>Writing & OET Practice</p>
+      </div>
+
+      <div class="group" onclick="openGroup('Group C')">
+        <h3>Group C</h3>
+        <p>Writing & OET Practice</p>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- GROUP PAGE -->
+  <section id="groupPage" class="hidden">
+
+    <div class="topbar">
+      <div>
+        <h1 id="groupTitle"></h1>
+        <p style="color:#888;">Your writing area</p>
+      </div>
+
+      <button onclick="backDashboard()" class="back">
+        ← Back
+      </button>
+    </div>
+
+    <div class="card">
+
+      <h2>Writing Task ✍️</h2>
+
+      <textarea
+        id="writingArea"
+        placeholder="Start writing here..."
+        oninput="countWords()"
+      ></textarea>
+
+      <div class="word-count">
+        Words: <span id="wordCount">0</span>
+      </div>
+
+      <button onclick="saveWriting()">Save Writing</button>
+
+      <p id="saveMessage"
+         style="color:#ff2020;margin-top:10px;">
+      </p>
+
+    </div>
+
+  </section>
+
+</div>
+
+
+<script>
+
+  function login() {
+
+    const name = document.getElementById("studentName").value.trim();
+    const code = document.getElementById("studentCode").value.trim();
+
+    if (!name || !code) {
+      alert("Please enter your name and student code.");
+      return;
+    }
+
+    localStorage.setItem("studentName", name);
+    localStorage.setItem("studentCode", code);
+
+    showDashboard();
+  }
+
+
+  function showDashboard() {
+
+    const name = localStorage.getItem("studentName");
+
+    if (!name) return;
+
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("dashboard").classList.remove("hidden");
+    document.getElementById("groupPage").classList.add("hidden");
+
+    document.getElementById("displayName").textContent = name;
+  }
+
+
+  function logout() {
+
+    localStorage.removeItem("studentName");
+    localStorage.removeItem("studentCode");
+
+    document.getElementById("loginPage").classList.remove("hidden");
+    document.getElementById("dashboard").classList.add("hidden");
+    document.getElementById("groupPage").classList.add("hidden");
+  }
+
+
+  function openGroup(groupName) {
+
+    document.getElementById("dashboard").classList.add("hidden");
+    document.getElementById("groupPage").classList.remove("hidden");
+
+    document.getElementById("groupTitle").textContent = groupName;
+
+    document.getElementById("writingArea").value = "";
+    document.getElementById("wordCount").textContent = "0";
+    document.getElementById("saveMessage").textContent = "";
+  }
+
+
+  function backDashboard() {
+
+    document.getElementById("groupPage").classList.add("hidden");
+    document.getElementById("dashboard").classList.remove("hidden");
+  }
+
+
+  function countWords() {
+
+    const text = document.getElementById("writingArea").value.trim();
+
+    if (!text) {
+      document.getElementById("wordCount").textContent = "0";
+      return;
+    }
+
+    const words = text.split(/\s+/).length;
+
+    document.getElementById("wordCount").textContent = words;
+  }
+
+
+  function saveWriting() {
+
+    const writing = document.getElementById("writingArea").value;
+
+    localStorage.setItem("studentWriting", writing);
+
+    document.getElementById("saveMessage").textContent =
+      "✓ Writing saved successfully!";
+  }
+
+
+  window.onload = function() {
+
+    if (localStorage.getItem("studentName")) {
+      showDashboard();
+    }
+
+  };
+
+</script>
+
+</body>
+</html>
