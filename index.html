@@ -390,6 +390,19 @@
   };
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+  const SUPABASE_URL = "https://vagzxrzjdnxglvgwtesd.supabase.co";
+
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_oOC-65La5I3-hq3lgmdmXw_Zmma6VKL";
+
+  const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+  console.log("Supabase connected!");
+</script>
 </body>
 </html>
