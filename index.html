@@ -186,7 +186,47 @@
 </header>
 
 <div class="container">
+<!-- SIGNUP -->
+<section id="signupPage" class="hidden">
 
+  <div class="hero">
+    <h1>Create your <span>OET</span> Account ✦</h1>
+    <p>Create your student account to access OET.</p>
+  </div>
+
+  <div class="card">
+    <h2>Student Signup</h2>
+
+    <input
+      type="text"
+      id="signupName"
+      placeholder="Enter your full name"
+    >
+
+    <input
+      type="email"
+      id="signupEmail"
+      placeholder="Enter your email"
+    >
+
+    <input
+      type="password"
+      id="signupPassword"
+      placeholder="Create a password"
+    >
+
+    <button onclick="signup()">Create Account →</button>
+
+    <p id="signupMessage"
+       style="color:#ff2020;margin-top:10px;">
+    </p>
+
+    <button onclick="showLogin()" class="back">
+      ← Back to Login
+    </button>
+  </div>
+
+</section>
   <!-- LOGIN -->
   <section id="loginPage">
 
@@ -211,6 +251,9 @@
       >
 
       <button onclick="login()">Enter Dashboard →</button>
+      <button onclick="showSignup()" class="back">
+  Create New Account
+</button>
     </div>
 
   </section>
@@ -292,16 +335,106 @@
 
 
 <script>
+function showSignup() {
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("signupPage").classList.remove("hidden");
+}
 
-  function login() {
+function showLogin() {
+  document.getElementById("signupPage").classList.add("hidden");
+  document.getElementById("loginPage").classList.remove("hidden");
+}
 
-    const name = document.getElementById("studentName").value.trim();
-    const code = document.getElementById("studentCode").value.trim();
+async function signup() {
 
-    if (!name || !code) {
-      alert("Please enter your name and student code.");
-      return;
+  const name = document.getElementById("signupName").value.trim();
+  const email = document.getElementById("signupEmail").value.trim();
+  const password = document.getElementById("signupPassword").value;
+
+  const message = document.getElementById("signupMessage");
+
+  if (!name || !email || !password) {
+    message.textContent = "Please fill all fields.";
+    return;
+  }
+
+  if (password.length < 6) {
+    message.textContent = "Password must be at least 6 characters.";
+    return;
+  }
+
+  const { data, error } = await supabaseClient.auth.signUp({
+  email: email,
+  password: password,
+  options: {
+    data: {
+      full_name: name
     }
+  }
+});
+
+if (error) {
+  message.textContent = error.message;
+  return;
+}
+
+if (data.user) {
+  const { error: profileError } = await supabaseClient
+    .from("profiles")
+    .insert([
+      {
+        id: data.user.id,
+        full_name: name,
+        email: email,
+        is_admin: false
+      }
+    ]);
+
+  if (profileError) {
+    console.log("Profile error:", profileError);
+  }
+}
+
+message.style.color = "#22c55e";
+message.textContent =
+  "✓ Account created! Check your email for verification.";
+
+  if (error) {
+    message.textContent = error.message;
+    return;
+  }
+
+  message.style.color = "#22c55e";
+  message.textContent =
+    "✓ Account created! Check your email for verification.";
+}
+  async function login() {
+
+  const email = document.getElementById("studentName").value.trim();
+  const password = document.getElementById("studentCode").value;
+
+  if (!email || !password) {
+    alert("Please enter your email and password.");
+    return;
+  }
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email: email,
+    password: password
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  const name =
+    data.user.user_metadata?.full_name || email;
+
+  localStorage.setItem("studentName", name);
+
+  showDashboard();
+}
 
     localStorage.setItem("studentName", name);
     localStorage.setItem("studentCode", code);
